@@ -1,0 +1,55 @@
+{% extends 'assignment/base.html' %}
+{% load static %}
+{% load filters %}
+{% load crispy_forms_tags %}
+{% block head %}{% endblock %}
+
+
+{% block content %}
+<div class="grade-std-wrapper">
+    <div style="font-size: 1.8em;">
+        <a style="color: white;" href="{% url 'assignment_app:all-students' sel.pk %}"><i class="fa fa-long-arrow-left" aria-hidden="true"></i></a>
+    </div>
+    
+    <div style="text-align: center; font-size: 1.8em; font-weight: 500; color: white; margin-bottom: 10px;">{{ sel.courses }}</div>
+    <div>
+        <!-- {% for ind in sel.studentothercourse_set.all %}
+            <div style="text-align: center; font-size: 1.8em; font-weight: 500; color: white; margin-bottom: 10px;">{{ ind.user.index_number }}</div>
+        {% endfor %} -->
+    </div>
+    {% for a in ass %}
+    <div class="row mb-2">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+
+                    <div class="list-ass">
+                        <div id="view__sol">
+                            <a style="color: red;" href="{% url 'assignment_app:view-assignment-pdf' a.pk %}" target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></a>
+                        </div>
+                        <div>{{ a.status }}</div>
+                        <div>{{ a.date_submitted }}</div>
+                        <div>
+                            {% if a.status == 'graded' %}
+                                {% for s in a.studentresult_set.all %}
+                                    <a class="btn btn-success" href="{% url 'assignment_app:update-grade' s.pk %}" role="button">Update</a>
+                                {% endfor %}
+                            {% else %}
+                                <a class="btn btn-primary" href="{% url 'assignment_app:score-student-section' a.studentothercourse.pk a.pk %}" role="button">Evaluate</a>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- <div class="swollen">
+                    <div><i class="fa fa-calendar" aria-hidden="true"></i> Date Uploaded: {{ u.date_created }}</div>
+                    <div><i class="fa fa-calendar" aria-hidden="true"></i> Submission Date: {{ u.submission_date }}</div>
+                    </div>
+                    <hr> -->
+{% endblock %}
